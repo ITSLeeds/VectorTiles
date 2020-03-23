@@ -7,6 +7,8 @@ Web maps are a great way to present your data, they allow for interactivity, and
 Tiling breaks your data into many small square datasets (tiles) than can then be downloaded individually. This means that you only have to download the tiles in the area you interested in rather than the whole dataset. This both reduces the amount of data that the web server has to send to the user and reduces the amount of data the user’s computer must hold in memory.
 Tiling was first implemented for raster data with each tile being a 256 x 256 pixel PNG image. It works great for basemaps and is still used by many websites today such as https://www.openstreetmap.org/. Tiles exist in a pyramid structure, at the top of the pyramid (zoom level 0) the whole world is a single tile. Each step down the pyramid (zoom levels 1,2,3 etc) increases the number of tiles by a factor of 4.  Tile sets typically go down to about zoom level 19 at which point one tile covers an area about the size of a single building.
 
+<img src='images/tiles.png'/>
+
 Raster tiles have two major limitations:
 1. They are static – you can’t click on an image to get extra information or dynamically change the styling of the map.
 2. They are large – while each tile is small, hosting all the tiles uses up a lot of space on your server. For example, a tile set for the UK is around 15 GB.
