@@ -75,5 +75,19 @@ However, not everyone can do this as the size of the package could be large and 
 
 We can do this by:
 
+
+## Basemaps
+
+### Using OpenMapTiles 
+
+### Generating your own Basemap
+
+## Hosting Vector Tiles
+
+## Viewing Tiles using Mapbox GL JS
+
+
+
+
 ### References:
 Haklay, Muki, Alex Singleton, and Chris Parker. "Web mapping 2.0: The neogeography of the GeoWeb." Geography Compass 2.6 (2008): 2011-2039.
