@@ -49,7 +49,12 @@ library(sf)
 msoa = st_read(file.path(folder, msoa_shape))
 st_write(msoa, "~/Downloads/msoa.geojson")
 ```
-//TODO add an alternative way, Python? CPP?
+If you have GDAL [installed](https://tracker.debian.org/pkg/gdal) then oneline would achieve the same thing, if you already have downloaded the shapefile. So the above can be done as:
+
+```sh
+ogr2ogr -f GeoJSON cities.json /tmp/Counties_and_UA/Counties_and_Unitary_Authorities_December_2017_Full_Extent_Boundaries_in_UK_WGS84.shp -lco RFC7946=YES
+
+```
 
 Let us convert this to a format called `.mbtiles` which is essentially a SQLite zipped formatted the way Mapbox (hence the mb part) can read it.
 
