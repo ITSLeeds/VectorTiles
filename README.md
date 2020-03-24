@@ -49,6 +49,8 @@ library(sf)
 msoa = st_read(file.path(folder, msoa_shape))
 st_write(msoa, "~/Downloads/msoa.geojson")
 ```
+//TODO add an alternative way, Python? CPP?
+
 Let us convert this to a format called `.mbtiles` which is essentially a SQLite zipped formatted the way Mapbox (hence the mb part) can read it.
 
 We will use `tippecanoe` repo/package to achieve this.
