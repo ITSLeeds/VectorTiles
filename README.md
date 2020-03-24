@@ -78,11 +78,21 @@ We can do this by:
 
 ## Basemaps
 
-### Using OpenMapTiles 
+To have a basemap you have three main choices:
+
+1. Get your basemap from a 3rd party service such as Mapbox, depending on your usage you may need to pay.
+2. Get pre-made tiles from OpenMapTiles, free for non-profit uses but a $1000 fee for commercial projects
+3. Generate your own tiles, free but most difficult.
+
+### Using OpenMapTiles
+
+You can sign up for a free account at www.openmaptiles.com 
 
 ### Generating your own Basemap
 
 ## Hosting Vector Tiles
+
+
 
 ## Viewing Tiles using Mapbox GL JS
 
