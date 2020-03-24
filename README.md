@@ -49,7 +49,7 @@ library(sf)
 msoa = st_read(file.path(folder, msoa_shape))
 st_write(msoa, "~/Downloads/msoa.geojson")
 ```
-If you have GDAL [installed](https://tracker.debian.org/pkg/gdal) then oneline would achieve the same thing, if you already have downloaded the shapefile. So the above can be done as:
+We have not tested Python but there has to be [packages](https://pypi.org/project/pyshp/1.1.7/) that can read shapefiles and interpret them into GeoJSON. If you have GDAL [installed](https://tracker.debian.org/pkg/gdal) then oneline would achieve the same thing, if you already have downloaded the shapefile. So the above can be done as:
 
 ```sh
 ogr2ogr -f GeoJSON cities.json /tmp/Counties_and_UA/Counties_and_Unitary_Authorities_December_2017_Full_Extent_Boundaries_in_UK_WGS84.shp -lco RFC7946=YES
@@ -58,11 +58,22 @@ ogr2ogr -f GeoJSON cities.json /tmp/Counties_and_UA/Counties_and_Unitary_Authori
 
 Let us convert this to a format called `.mbtiles` which is essentially a SQLite zipped formatted the way Mapbox (hence the mb part) can read it.
 
-We will use `tippecanoe` repo/package to achieve this.
+We will use [`tippecanoe`](https://github.com/mapbox/tippecanoe) repo/package to achieve this.
 
 ```sh
 tippecanoe -zg -o out.mbtiles --drop-densest-as-needed msoa.geojson
 ```
+
+//TODO use the mbtile viewer to view the tiles we generated.
+
+We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox JS instance. The drawback here, is an initial lag in downloading the whole file by the client (browser), the pro is, as you probably guess, is this happens only once. It was perhaps developed for mobile apps and works perfect for such cases.
+
+//TODO add html example with mbtiles
+//TODO test servers and CORS
+
+However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshley. It is important to shorten the ["time to first bye"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a languate neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
+
+We can do this by:
 
 ### References:
 Haklay, Muki, Alex Singleton, and Chris Parker. "Web mapping 2.0: The neogeography of the GeoWeb." Geography Compass 2.6 (2008): 2011-2039.
