@@ -25,6 +25,14 @@ Due to these limitations’ raster tiles are mostly used for base maps and are s
 ### Introducing Vector Tiles
 Vector Tiles are a newer take on the idea of tiling, instead of many images the tiles are lots of tiny vector datasets. These vector tiles are usually smaller as not all pixeles need to be coded.
 
+## Prerequisites
+
+Most of the tools in this tutorial are linux command line applications. So you will need a linux computer. If you do not have a linux computer you can.
+
+1. Create a virtual machine using software such as virtual box
+2. On windows 10 use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) 
+
+
 ### Get started
 Converting a shape file into tile:
 
