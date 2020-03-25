@@ -181,6 +181,10 @@ See documentation at https://openmaptiles.org/docs/
 
 ## Viewing Tiles using Mapbox GL JS
 
+There are many ways to view vector tiles but when building a website we reccomend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [leaflet](). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, aniimations, and other advanced features.
+
+Although Mapbox GL JS is open source it is maintained by Mapbox and most of the documentation stears you towards using Mapbox's paid services. However it works equally well with vector tiles hosted from any location. 
+
 
 
 
