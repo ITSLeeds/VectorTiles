@@ -27,13 +27,35 @@ Vector Tiles are a newer take on the idea of tiling, instead of many images the 
 
 ## Prerequisites
 
-Most of the tools in this tutorial are linux command line applications. So you will need a linux computer. If you do not have a linux computer you can.
+Most of the tools in this tutorial are linux command line applications. So you will need a linux computer with permission to install software. If you do not have a linux computer you can.
 
-1. Create a virtual machine using software such as virtual box
-2. On windows 10 use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) 
+1. Create a virtual machine using software such as [Virtual Box](https://www.virtualbox.org/)
+2. On Windows 10, use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) 
+
+### Required Software
+
+**[tippecanoe](https://github.com/mapbox/tippecanoe)**
+
+Tippecanoe is free software from Mapbox which converts `.geojson` files into vector tiles.
+
+**[mbutils](https://github.com/mapbox/mbutil)**
+
+Tippecanoe is free software from Mapbox which converts `.mbtiles` files into a folder of vector tiles.
+
+**A text editor**
+
+We will be editing some files an a simple text editor will be required.
+
+**A HTML Server**
+
+This tutorial was written with [apache](https://httpd.apache.org/) in mind, but any modern HTML server will do.
+
+**GIS Software**
+
+You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. THis can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/) 
 
 
-### Get started
+## Get started
 Converting a shape file into tile:
 
 An example file in question would be the UK MSOA boundaries which is roughly ~600M in size when converted to plani `.geojson` file.
