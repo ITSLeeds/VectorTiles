@@ -92,7 +92,55 @@ You can sign up for a free account at www.openmaptiles.com
 
 ## Hosting Vector Tiles
 
+When hosting vector tiles on your own server you have to main choices:
 
+1. Install a specalist tile hosting server such as TileServer and use a `.mbtiles`
+2. Generate indervidual `.pbf` tiles and then upload them to a folder on your server.
+
+### Hosting a folder of indervidual titles
+
+This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file of servers such as Amazon S3. It shoudl also improvement the hosting performance as your serve does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software.
+
+You can convert a `.geojson` file into a folder of vector titles via the following command
+
+```sh
+tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed msoa.geojson
+```
+This will create a folder called `mytiles` containing many subfolders with all of your tiles.
+
+#### To gzip or not to gzip
+
+By default tippecanoe will create gzipped `.pbf` files. [gzip](https://en.wikipedia.org/wiki/Gzip) is an compression standard which is supported by all modern browsers. The compressed `.pbf` files are about 25% of the size of the uncompressed ones. This saves storage space on your serve and speeds up the download of the tiles, giving your users a better experience.
+
+So gzipped `.pbf` files is better. But to use the gzipped files you must modify the [HTTP Headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) to include:
+
+```
+Content-Encoding: gzip
+```
+
+This will tell the user's browser that the files are gzipped and to ungzip them before trying to use them. Without this HTTP Header the broweser will be unable to read and render the tiles. So gzipping is only a good idea if you are able to modify the HTTP Headers on your server.
+
+If you are using [apache](https://httpd.apache.org/) server then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
+
+```
+Header set Content-Encoding: gzip
+```
+
+If your are using a different server software, check for a tutorial on how to modify HTTP headers.
+
+If you don't want to use gipped `.pbf` files then you can generate uncompressed files with tippecanoe by:
+
+```sh
+tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-compression msoa.geojson
+```
+#### Uploading your tiles
+
+Once you have created your tiles simply upload them to your server using an FTP client such as [Filezilla](https://filezilla-project.org/)
+
+
+### Hosting using a mbtiles file
+
+See documentation at https://openmaptiles.org/docs/
 
 ## Viewing Tiles using Mapbox GL JS
 
