@@ -1,5 +1,12 @@
 # Making Vector Tiles: For Pleasure and Profit
 
+By 
+
+Dr Malcolm Morgan, Research Fellow in Transport and Spatial Analysis, Intitute for Transport Studies
+
+Dr Layik Hama, Leeds Insitue for Data Analaytics
+
+
 ## Summary
 Vector Tiles are a great new way to serve geographic data via web maps.  They provide significant improvements over traditional methods of creating web maps but are a little more complicated to set up. 
 
