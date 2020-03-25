@@ -89,7 +89,7 @@ st_write(msoa, "~/Downloads/msoa.geojson")
 We have not tested Python but there has to be [packages](https://pypi.org/project/pyshp/1.1.7/) that can read shapefiles and interpret them into GeoJSON. If you have GDAL [installed](https://tracker.debian.org/pkg/gdal) then oneline would achieve the same thing, if you already have downloaded the shapefile. So the above can be done as:
 
 ```sh
-ogr2ogr -f GeoJSON cities.json /tmp/Counties_and_UA/Counties_and_Unitary_Authorities_December_2017_Full_Extent_Boundaries_in_UK_WGS84.shp -lco RFC7946=YES
+ogr2ogr -f GeoJSON msoa.geojson /tmp/Counties_and_UA/Counties_and_Unitary_Authorities_December_2017_Full_Extent_Boundaries_in_UK_WGS84.shp -lco RFC7946=YES
 
 ```
 
@@ -108,7 +108,7 @@ We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox JS insta
 //TODO add html example with mbtiles
 //TODO test servers and CORS
 
-However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshley. It is important to shorten the ["time to first bye"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a languate neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
+However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshley. It is important to shorten the ["time to first byte"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a languate neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
 
 We can do this by:
 
