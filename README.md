@@ -2,9 +2,9 @@
 
 By 
 
-Dr Malcolm Morgan, Research Fellow in Transport and Spatial Analysis, Intitute for Transport Studies
+Dr Malcolm Morgan, Research Fellow in Transport and Spatial Analysis, Institute for Transport Studies, University of Leeds
 
-Dr Layik Hama, Leeds Insitue for Data Analaytics
+Dr Layik Hama, Leeds Insitute for Data Analaytics, University of Leeds
 
 
 ## Summary
@@ -185,7 +185,7 @@ There are many ways to view vector tiles but when building a website we reccomen
 
 Although Mapbox GL JS is open source it is maintained by Mapbox and most of the documentation stears you towards using Mapbox's paid services. However it works equally well with vector tiles hosted from any location. 
 
-
+Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/) and lots of [examples](https://docs.mapbox.com/mapbox-gl-js/examples/) to this tutorial will focus on the changes required for hosting your own vector tiles and supporting muliple vector tile layers.
 
 
 ### References:
