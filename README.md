@@ -63,6 +63,9 @@ You will need to project your dataset to `epsg:4326` and convert them into the `
 
 ## Part 1: Making Vector Titles
 
+<img src='images/gen_flowchart.png'/>
+
+
 ### To gzip or not to gzip
 
 Berfor generating the vector tiles you must make a decison on if they will be gzipped or not. [gzip](https://en.wikipedia.org/wiki/Gzip) is a compression standard which is supported by all modern browsers. The compressed `.pbf` files are about 25% of the size of the uncompressed ones. This saves storage space on your server and speeds up the download of the tiles, giving your users a better experience.
@@ -89,6 +92,10 @@ To have a basemap, you have three main choices:
 #### Using OpenMapTiles
 
 You can sign up for a free account at www.openmaptiles.com 
+
+You can download tiles for the whole [planet](https://openmaptiles.com/downloads/planet/) or just a [country](https://openmaptiles.com/downloads/europe/great-britain/england/) or [region](https://openmaptiles.com/downloads/europe/great-britain/england/leeds/). OpenMapTiles allow for free download of tiles for education and evaluation purposes, but charge upto $1,000 for a onetime download for commerical projects.
+
+The download will be a single `.mbtiles` file.
 
 If you don't want to use gzipped `.pbf` files then you can generate uncompressed files with tippecanoe by:
 
@@ -205,6 +212,7 @@ There are many ways to view vector tiles, but when building a website, we recomm
 Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. 
 
 Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/) and lots of [examples](https://docs.mapbox.com/mapbox-gl-js/examples/) to this tutorial will focus on the changes required for hosting your own vector tiles and supporting multiple vector tile layers.
+
 <img src='images/vis_flowchart.png'/>
 
 This example is based on the Mapbox getting started [example](https://docs.mapbox.com/mapbox-gl-js/example/simple-map/).
