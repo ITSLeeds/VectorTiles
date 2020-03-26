@@ -61,6 +61,22 @@ This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but 
 
 You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/) 
 
+## Part 1: Making Vector Titles
+### Making a Basemaps
+
+To have a basemap, you have three main choices:
+
+1. Get your basemap from a 3rd party service such as Mapbox, depending on your usage you may need to pay.
+2. Get pre-made tiles from OpenMapTiles, free for non-profit uses but a $1000 fee for commercial projects
+3. Generate your own tiles, free but most difficult.
+
+#### Using OpenMapTiles
+
+You can sign up for a free account at www.openmaptiles.com 
+
+#### Generating your own Basemap
+
+### Making Tiles from your own Data
 
 ## Get started
 Converting a shapefile into tile:
@@ -112,23 +128,7 @@ However, not everyone can do this as the size of the package could be large and 
 
 We can do this by:
 
-
-## Basemaps
-
-To have a basemap, you have three main choices:
-
-1. Get your basemap from a 3rd party service such as Mapbox, depending on your usage you may need to pay.
-2. Get pre-made tiles from OpenMapTiles, free for non-profit uses but a $1000 fee for commercial projects
-3. Generate your own tiles, free but most difficult.
-
-### Using OpenMapTiles
-
-You can sign up for a free account at www.openmaptiles.com 
-
-### Generating your own Basemap
-
-## Hosting Vector Tiles
-
+## Part 2: Hosting Vector Tiles
 When hosting vector tiles on your own server, you have to main choices:
 
 1. Install a specialist tile hosting server such as TileServer and use a `.mbtiles`
@@ -179,13 +179,13 @@ Once you have created your tiles simply upload them to your server using an FTP 
 
 See documentation at https://openmaptiles.org/docs/
 
-## Viewing Tiles using Mapbox GL JS
-
+## Part 3: Visualising Vector Tiles
 There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [leaflet](). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
 
 Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. 
 
 Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/) and lots of [examples](https://docs.mapbox.com/mapbox-gl-js/examples/) to this tutorial will focus on the changes required for hosting your own vector tiles and supporting multiple vector tile layers.
+<img src='images/vis_flowchart.png'/>
 
 This example is based on the Mapbox getting started [example](https://docs.mapbox.com/mapbox-gl-js/example/simple-map/).
 
@@ -299,5 +299,5 @@ You will notice that in the HTML example above, we made no reference to where ou
 ```
 
 
-### References:
+## References:
 Haklay, Muki, Alex Singleton, and Chris Parker. "Web mapping 2.0: The neogeography of the GeoWeb." Geography Compass 2.6 (2008): 2011-2039.
