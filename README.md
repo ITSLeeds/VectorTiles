@@ -206,7 +206,7 @@ This example is bases on the Mapbox getting started [example](https://docs.mapbo
 <body>
 <div id="map"></div>
 <script>
-	mapboxgl.accessToken = 'NotNeeded';
+    mapboxgl.accessToken = 'NotNeeded';
     var map = new mapboxgl.Map({
         container: 'map',                                 // container id
         style: 'https://www.mysite.com/tiles/style.json', // stylesheet location
@@ -217,11 +217,86 @@ This example is bases on the Mapbox getting started [example](https://docs.mapbo
 
 </body>
 </html>
+```
+The key changes from the Mapbox example are; that `mapboxgl.accessToken` must be defined but is not used as we are not connecting to the Mapbox services, and the location of the `style.json` has been changed to a URL on your server. 
+
+### Constructing the style.json file
+
+You will notice that in the HTML example above we made no reference to where our vector tiles are of how they should be displayed. This is becuase all this infermation is contained within a styleshhet `.json` file. The full specification for the stylesheet can be found [here](https://docs.mapbox.com/mapbox-gl-js/style-spec/) but a similified strucutre is shown below.
+
+```json
+{
+  "version": 8,
+  "name": "Basic",
+  "metadata": {
+    "openmaptiles:version": "3.x"
+  },
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "tiles": ["https://www.mysite.com/tiles/basemap/{z}/{x}/{y}.pbf"]
+    },
+    "msoa": {
+      "type": "vector",
+      "tiles": ["https://www.mysite.com/tiles/msoa/{z}/{x}/{y}.pbf"
+      ]
+    }
+  },
+  "glyphs": "https://www.mysite.com/fonts/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "hsl(47, 26%, 88%)"
+      }
+    },
+    {
+      "id": "landuse-residential",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landuse",
+      "filter": [
+        "all",
+        [
+          "==",
+          "$type",
+          "Polygon"
+        ],
+        [
+          "in",
+          "class",
+          "residential",
+          "suburb",
+          "neighbourhood"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsl(47, 13%, 86%)",
+        "fill-opacity": 0.7
+      }
+    },
+    {
+      "id": "msoa_layer",
+      "type": "fill",
+      "source": "msoa",
+      "source-layer": "msoa",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsl(105, 13%, 86%)",
+        "fill-opacity": 0.7
+      }
+    }
+  ],
+  "id": "basic"
+}
 
 ```
-
-
-
 
 
 ### References:
