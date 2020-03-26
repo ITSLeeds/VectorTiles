@@ -62,7 +62,23 @@ This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but 
 You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/) 
 
 ## Part 1: Making Vector Titles
-### Making a Basemaps
+
+### To gzip or not to gzip
+
+Berfor generating the vector tiles you must make a decison on if they will be gzipped or not. [gzip](https://en.wikipedia.org/wiki/Gzip) is a compression standard which is supported by all modern browsers. The compressed `.pbf` files are about 25% of the size of the uncompressed ones. This saves storage space on your server and speeds up the download of the tiles, giving your users a better experience.
+
+So gzipped `.pbf` files are better. But to use the gzipped files, you must modify the [HTTP Headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) to include:
+
+```
+Content-Encoding: gzip
+```
+
+This will tell the user's browser that the files are gzipped and to ungzip them before trying to use them. Without this HTTP Header, the browser will be unable to read and render the tiles. So gzipping is only a good idea if you are able to modify the HTTP Headers on your server.
+
+The sections below will outline how to generate tiles with and without gzipping and how to modify HTTP headers when using [Apache](https://httpd.apache.org/) server. If you are using a different server software, check for a tutorial on how to modify HTTP headers.
+
+
+### Making a Basemap
 
 To have a basemap, you have three main choices:
 
@@ -74,11 +90,21 @@ To have a basemap, you have three main choices:
 
 You can sign up for a free account at www.openmaptiles.com 
 
+If you don't want to use gzipped `.pbf` files then you can generate uncompressed files with tippecanoe by:
+
+```sh
+tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-compression msoa.geojson
+```
+
+
 #### Generating your own Basemap
 
 ### Making Tiles from your own Data
 
-## Get started
+#### Converting your data to GeoJSON
+
+The tools we use to create Vector Tiles require the input data to be in the `.geojson` format an to be using the `epsg:4326` coorinate reference system.
+
 Converting a shapefile into tile:
 
 An example file in question would be the UK MSOA boundaries which are roughly ~600M in size when converted to plain `.geojson` file.
@@ -109,6 +135,14 @@ ogr2ogr -f GeoJSON msoa.geojson /tmp/Counties_and_UA/Counties_and_Unitary_Author
 
 ```
 
+#### Converting GeoJSON to Vector Tiles
+
+##### Converting to a single mbtiles file
+
+
+##### Converting to a folder of PFB files
+
+
 Let us convert this to a format called `.mbtiles` which is essentially an SQLite zipped formatted the way Mapbox (hence the mb part) can read it.
 
 We will use [`tippecanoe`](https://github.com/mapbox/tippecanoe) repo/package to achieve this.
@@ -129,6 +163,16 @@ However, not everyone can do this as the size of the package could be large and 
 We can do this by:
 
 ## Part 2: Hosting Vector Tiles
+
+then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
+
+```
+Header set Content-Encoding: gzip
+```
+
+
+
+
 When hosting vector tiles on your own server, you have to main choices:
 
 1. Install a specialist tile hosting server such as TileServer and use a `.mbtiles`
@@ -145,31 +189,7 @@ tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed msoa.geojs
 ```
 This will create a folder called `mytiles` containing many subfolders with all of your tiles.
 
-#### To gzip or not to gzip
 
-By default tippecanoe will create gzipped `.pbf` files. [gzip](https://en.wikipedia.org/wiki/Gzip) is a compression standard which is supported by all modern browsers. The compressed `.pbf` files are about 25% of the size of the uncompressed ones. This saves storage space on your server and speeds up the download of the tiles, giving your users a better experience.
-
-So gzipped `.pbf` files are better. But to use the gzipped files, you must modify the [HTTP Headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) to include:
-
-```
-Content-Encoding: gzip
-```
-
-This will tell the user's browser that the files are gzipped and to ungzip them before trying to use them. Without this HTTP Header, the browser will be unable to read and render the tiles. So gzipping is only a good idea if you are able to modify the HTTP Headers on your server.
-
-If you are using [Apache](https://httpd.apache.org/) server, then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
-
-```
-Header set Content-Encoding: gzip
-```
-
-If you are using a different server software, check for a tutorial on how to modify HTTP headers.
-
-If you don't want to use gzipped `.pbf` files then you can generate uncompressed files with tippecanoe by:
-
-```sh
-tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-compression msoa.geojson
-```
 #### Uploading your tiles
 
 Once you have created your tiles simply upload them to your server using an FTP client such as [Filezilla](https://filezilla-project.org/)
