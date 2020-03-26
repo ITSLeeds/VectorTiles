@@ -45,7 +45,7 @@ Most of the tools in this tutorial are Linux command line applications. So you w
 
 Tippecanoe is free software from Mapbox which converts `.geojson` files into vector tiles.
 
-**[mbutils](https://github.com/mapbox/mbutil)**
+**[mb-util](https://github.com/mapbox/mbutil)**
 
 Tippecanoe is free software from Mapbox which converts `.mbtiles` files into a folder of vector tiles.
 
@@ -97,10 +97,17 @@ You can download tiles for the whole [planet](https://openmaptiles.com/downloads
 
 The download will be a single `.mbtiles` file.
 
-If you don't want to use gzipped `.pbf` files then you can generate uncompressed files with tippecanoe by:
+To convert to a folder of gzipped tiles we will use **mb-util**
 
 ```sh
-tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-compression msoa.geojson
+./mb-util --image_format=pbf countries.mbtiles countries
+```
+
+you can convert the gzipped files to ungzipped files with the following bash commands:
+
+```sh
+gzip -d -r -S .pbf *
+find . -type f -exec mv '{}' '{}'.pbf \;
 ```
 
 
@@ -146,10 +153,6 @@ ogr2ogr -f GeoJSON msoa.geojson /tmp/Counties_and_UA/Counties_and_Unitary_Author
 
 ##### Converting to a single mbtiles file
 
-
-##### Converting to a folder of PFB files
-
-
 Let us convert this to a format called `.mbtiles` which is essentially an SQLite zipped formatted the way Mapbox (hence the mb part) can read it.
 
 We will use [`tippecanoe`](https://github.com/mapbox/tippecanoe) repo/package to achieve this.
@@ -169,6 +172,21 @@ However, not everyone can do this as the size of the package could be large and 
 
 We can do this by:
 
+##### Converting to a folder of pbf files
+
+Converting to folder of `.pbf` tiles with gzip compression
+
+```sh
+tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed msoa.geojson
+```
+
+If you don't want to use gzipped `.pbf` files then you can generate uncompressed files with tippecanoe by:
+
+```sh
+tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-compression msoa.geojson
+```
+
+
 ## Part 2: Hosting Vector Tiles
 
 then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
@@ -176,9 +194,6 @@ then the HTTP header can be simply modified by adding a `.htaccess` file into th
 ```
 Header set Content-Encoding: gzip
 ```
-
-
-
 
 When hosting vector tiles on your own server, you have to main choices:
 
