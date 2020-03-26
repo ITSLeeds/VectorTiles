@@ -187,6 +187,42 @@ Although Mapbox GL JS is open source it is maintained by Mapbox and most of the 
 
 Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/) and lots of [examples](https://docs.mapbox.com/mapbox-gl-js/examples/) to this tutorial will focus on the changes required for hosting your own vector tiles and supporting muliple vector tile layers.
 
+This example is bases on the Mapbox getting started [example](https://docs.mapbox.com/mapbox-gl-js/example/simple-map/).
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Display a map</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'NotNeeded';
+    var map = new mapboxgl.Map({
+        container: 'map',                                 // container id
+        style: 'https://www.mysite.com/tiles/style.json', // stylesheet location
+        center: [-1, 53],                                 // starting position [lng, lat]
+        zoom: 9                                           // starting zoom
+    });
+</script>
+
+</body>
+</html>
+
+```
+
+
+
+
 
 ### References:
 Haklay, Muki, Alex Singleton, and Chris Parker. "Web mapping 2.0: The neogeography of the GeoWeb." Geography Compass 2.6 (2008): 2011-2039.
