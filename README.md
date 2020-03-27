@@ -18,16 +18,16 @@ In this tutorial, we will cover going from a source geographic file format to vi
 Web maps (Haklay et al. 2008) are a great way to present your data; they allow for interactivity, and for users to zoom into their area of interest. But they have a problem with large datasets; they become slow and unresponsive. This decline in performance is because you must download all your data before it is put onto the map. The solution was to tile the data.
 
 ### Tiling – What it is and why it matters
-Tiling breaks your data into many small square datasets (tiles) than can then be downloaded individually. This means that you only have to download the tiles in the area you interested in rather than the whole dataset. This both reduces the amount of data that the webserver has to send to the user and reduces the amount of data the user’s computer must hold in memory.
-Tiling was first implemented for raster data with each tile being a 256 x 256 pixel PNG image. It works well for basemaps and is still used by many websites today such as https://www.openstreetmap.org/. Tiles exist in a pyramid structure; at the top of the pyramid (zoom level 0), the whole world is a single tile. Each step down the pyramid (zoom levels 1,2,3 etc.) increases the number of tiles by a factor of 4.  Tilesets typically go down to about zoom level 19 at which point one tile covers an area about the size of a single building.
+Tiling breaks your data into many small square datasets (tiles) than can then be downloaded individually. This means that you only have to download the tiles in the area you interested in rather than the whole dataset. This both reduces the amount of data that the webserver has to send to the user and reduces the amount of data the user's computer must hold in memory.
+Tiling was first implemented for raster data with each tile being a 256 x 256 pixel PNG image. It works well for basemaps and is still used by many websites today such as https://www.openstreetmap.org/. Tiles exist in a pyramid structure; at the top of the pyramid (zoom level 0), the whole world is a single tile. Each step down the pyramid (zoom levels 1,2,3, etc.) increases the number of tiles by a factor of 4.  Tilesets typically go down to about zoom level 19 at which point one tile covers an area about the size of a single building.
 
 <img src='images/tiles.png'/>
 
 Raster tiles have two significant limitations:
-1. They are static – you can’t click on an image to get extra information or dynamically change the styling of the map.
+1. They are static – you can't click on an image to get extra information or dynamically change the styling of the map.
 2. They are large – while each tile is small, hosting all the tiles uses up a lot of space on your server. For example, a tileset for the UK is around 15 GB.
 
-Due to these limitations raster tiles are mostly used for base maps and are served by third party services. 
+Due to these limitations, raster tiles are mostly used for base maps and are served by third party services. 
 
 ### Introducing Vector Tiles
 Vector Tiles are a newer take on the idea of tiling, instead of many images the tiles are lots of tiny vector datasets. These vector tiles are usually smaller, as not all pixels need to be coded.
@@ -38,11 +38,11 @@ Most of the tools in this tutorial are Linux command line applications. So you w
 
 1. Create a virtual machine using software such as [Virtual Box](https://www.virtualbox.org/)
 2. On Windows 10, use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
-3. Some of the tools are supported on Mac, if you have a Mac check documentation
+3. Some of the tools are supported on Mac if you have a Mac check documentation
 
 ### Software
 
-This tutorial uses a range of different software, not all software is required for everyworkflow. The flowcharts below highlight which tools are needed to perfrom each task.
+This tutorial uses a range of different software; not all software is required for every workflow. The flowcharts below highlight which tools are needed to perform each task.
 
 **[tippecanoe](https://github.com/mapbox/tippecanoe)**
 
@@ -54,7 +54,7 @@ Tippecanoe is free software from Mapbox which converts `.mbtiles` files into a f
 
 **A text editor**
 
-We will be editing some files and a simple text editor will be required.
+We will be editing some files, and a simple text editor will be required.
 
 **A HTML Server**
 
@@ -62,19 +62,19 @@ This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but 
 
 **A FTP client** 
 
-You will need to upload files to your server, usually this is done with a FTP client such as [Filezilla](https://filezilla-project.org/)
+You will need to upload files to your server. Usually, this is done with an FTP client such as [Filezilla](https://filezilla-project.org/)
 
 **GIS Software**
 
-You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/). QGIS is aviaible for Windows, Mac, and Linux.
+You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/). QGIS is available for Windows, Mac, and Linux.
 
 **[openmaptiles](https://github.com/openmaptiles/openmaptiles)**
 
-If you wish to generate your own basemap tiles, you will need to use **openmaptiles**. Alteritvily you can download premade tiles which may be free or may require a one off payment. openmaptiles is aviaible for Windows, Mac, and Linux (see below).
+If you wish to generate your own basemap tiles, you will need to use **openmaptiles**. Alteritvily you can download premade tiles which may be free or may require a one-off payment. openmaptiles is available for Windows, Mac, and Linux (see below).
 
 **[docker](https://www.docker.com/)**
 
-**openmaptiles** requires docker. Docker is aviaible for Windows, Mac, and Linux.
+**openmaptiles** requires docker. Docker is available for Windows, Mac, and Linux.
 
 ## Part 1: Making Vector Titles
 
@@ -83,7 +83,7 @@ If you wish to generate your own basemap tiles, you will need to use **openmapti
 
 ### To gzip or not to gzip
 
-Berfor generating the vector tiles you must make a decison on if they will be gzipped or not. [gzip](https://en.wikipedia.org/wiki/Gzip) is a compression standard which is supported by all modern browsers. The compressed `.pbf` files are about 25% of the size of the uncompressed ones. This saves storage space on your server and speeds up the download of the tiles, giving your users a better experience.
+Before generating the vector tiles, you must make a decision on if they will be gzipped or not. [gzip](https://en.wikipedia.org/wiki/Gzip) is a compression standard which is supported by all modern browsers. The compressed `.pbf` files are about 25% of the size of the uncompressed ones. This saves storage space on your server and speeds up the download of the tiles, giving your users a better experience.
 
 So gzipped `.pbf` files are better. But to use the gzipped files, you must modify the [HTTP Headers](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields) to include:
 
@@ -101,18 +101,18 @@ The sections below will outline how to generate tiles with and without gzipping 
 To have a basemap, you have three main choices:
 
 1. Get your basemap from a 3rd party service such as Mapbox, depending on your usage you may need to pay.
-2. Get pre-made tiles from OpenMapTiles, free for non-profit uses but a $1000 fee for commercial projects
+2. Get premade tiles from OpenMapTiles, free for non-profit uses but a $1000 fee for commercial projects
 3. Generate your own tiles, free but most difficult.
 
 #### Using OpenMapTiles
 
 You can sign up for a free account at www.openmaptiles.com 
 
-You can download tiles for the whole [planet](https://openmaptiles.com/downloads/planet/) or just a [country](https://openmaptiles.com/downloads/europe/great-britain/england/) or [region](https://openmaptiles.com/downloads/europe/great-britain/england/leeds/). OpenMapTiles allow for free download of tiles for education and evaluation purposes, but charge upto $1,000 for a onetime download for commerical projects.
+You can download tiles for the whole [planet](https://openmaptiles.com/downloads/planet/) or just a [country](https://openmaptiles.com/downloads/europe/great-britain/england/) or [region](https://openmaptiles.com/downloads/europe/great-britain/england/leeds/). OpenMapTiles allow for free download of tiles for education and evaluation purposes but charge up to $1,000 for a onetime download for commercial projects.
 
 The download will be a single `.mbtiles` file.
 
-To convert to a folder of gzipped tiles we will use **mb-util**
+To convert to a folder of gzipped tiles, we will use **mb-util**
 
 ```sh
 ./mb-util --image_format=pbf countries.mbtiles countries
@@ -133,7 +133,7 @@ find . -type f -exec mv '{}' '{}'.pbf \;
 
 #### Converting your data to GeoJSON
 
-The tools we use to create Vector Tiles require the input data to be in the `.geojson` format an to be using the `epsg:4326` coorinate reference system.
+The tools we use to create Vector Tiles require the input data to be in the `.geojson` format an to be using the `epsg:4326` coordinate reference system.
 
 Converting a shapefile into tile:
 
@@ -184,13 +184,13 @@ We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox JS insta
 //TODO add html example with mbtiles
 //TODO test servers and CORS
 
-However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshly. It is important to shorten the ["time to first byte"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a language neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
+However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshly. It is important to shorten the ["time to first byte"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a language-neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
 
 We can do this by:
 
 ##### Converting to a folder of pbf files
 
-Converting to folder of `.pbf` tiles with gzip compression
+Converting to a folder of `.pbf` tiles with gzip compression
 
 ```sh
 tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed msoa.geojson
@@ -217,7 +217,7 @@ See documentation at https://openmaptiles.org/docs/
 
 ### Hosting a folder of individual titles
 
-This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file of servers such as Amazon S3. It should also improve the hosting performance as your server does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software. It is also less suited to hosting datasets that you expect to update regually.
+This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file servers such as Amazon S3. It should also improve the hosting performance as your server does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software. It is also less suited to hosting datasets that you expect to update regularly.
 
 #### Uploading your tiles
 
@@ -232,12 +232,12 @@ There are two reasons you may want to modify HTML headers.
 
 Cross Origin Resouce Sharing (CORS) is required if you wish to host the tiles on a different server from the one that will serve your website. Common use cases are:
 
-1. You are using separate servers for tile hosting (e.g. Google Cloud or Amazon S3) than for webhosting.
+1. You are using separate servers for tile hosting (e.g. Google Cloud or Amazon S3) than for web hosting.
 2. You wish to use the [Maputnik](https://maputnik.github.io/) style editor to build your `style.json` file (see below).
 
 then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
 
-If you are using Apache server HTML headers can be simply modified by adding a `.htacces` file into the folder containing your vector tiles. The `.htacces` file will apply to all the subfolders below the file, so storing all your tiles in a single folder is a good idea.
+If you are using Apache server, HTML headers can be simply modified by adding a `.htacces` file into the folder containing your vector tiles. The `.htacces` file will apply to all the subfolders below the file, so storing all your tiles in a single folder is a good idea.
 
 **Example folder structure** 
 ```
