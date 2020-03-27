@@ -37,17 +37,20 @@ Vector Tiles are a newer take on the idea of tiling, instead of many images the 
 Most of the tools in this tutorial are Linux command line applications. So you will need a Linux computer with permission to install the software. If you do not have a Linux computer, you can.
 
 1. Create a virtual machine using software such as [Virtual Box](https://www.virtualbox.org/)
-2. On Windows 10, use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) 
+2. On Windows 10, use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+3. Some of the tools are supported on Mac, if you have a Mac check documentation
 
-### Required Software
+### Software
+
+This tutorial uses a range of different software, not all software is required for everyworkflow. The flowcharts below highlight which tools are needed to perfrom each task.
 
 **[tippecanoe](https://github.com/mapbox/tippecanoe)**
 
-Tippecanoe is free software from Mapbox which converts `.geojson` files into vector tiles.
+Tippecanoe is free software from Mapbox which converts `.geojson` files into vector tiles. It is also supported on Mac.
 
 **[mb-util](https://github.com/mapbox/mbutil)**
 
-Tippecanoe is free software from Mapbox which converts `.mbtiles` files into a folder of vector tiles.
+Tippecanoe is free software from Mapbox which converts `.mbtiles` files into a folder of `.pbf` vector tiles.
 
 **A text editor**
 
@@ -59,7 +62,15 @@ This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but 
 
 **GIS Software**
 
-You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/) 
+You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/). QGIS is aviaible for Windows, Mac, and Linux.
+
+**[openmaptiles](https://github.com/openmaptiles/openmaptiles)**
+
+If you wish to generate your own basemap tiles, you will need to use **openmaptiles**. Alteritvily you can download premade tiles which may be free or may require a one off payment. openmaptiles is aviaible for Windows, Mac, and Linux (see below).
+
+**[docker](https://www.docker.com/)**
+
+**openmaptiles** requires docker. Docker is aviaible for Windows, Mac, and Linux.
 
 ## Part 1: Making Vector Titles
 
