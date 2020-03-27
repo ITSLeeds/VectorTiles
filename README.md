@@ -121,8 +121,9 @@ gzip -d -r -S .pbf *
 find . -type f -exec mv '{}' '{}'.pbf \;
 ```
 
-
 #### Generating your own Basemap
+
+
 
 ### Making Tiles from your own Data
 
@@ -200,13 +201,15 @@ tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-
 
 ## Part 2: Hosting Vector Tiles
 
+
+
 then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
 
 ```
 Header set Content-Encoding: gzip
 ```
 
-When hosting vector tiles on your own server, you have to main choices:
+When hosting vector tiles on your own server, you have two main choices:
 
 1. Install a specialist tile hosting server such as TileServer and use a `.mbtiles`
 2. Generate individual `.pbf` tiles and then upload them to a folder on your server.
