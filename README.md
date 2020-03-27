@@ -10,7 +10,7 @@ Dr Layik Hama, Leeds Institute for Data Analytics, University of Leeds
 ## Summary
 Vector Tiles are a great new way to serve geographic data via web maps.  They provide significant improvements over traditional methods of creating web maps but are a little more complicated to set up. 
 
-This tutorial explains how to use Vector Tiles for both base maps but more importantly, how to create your own vector tile layers.  It also explains how to do this using comply free software and avoiding licencing or subscription fees. 
+This tutorial explains how to use Vector Tiles for both base maps but more importantly, how to create your own vector tile layers.  It also explains how to do this using completely free software and avoiding licencing or subscription fees. 
 
 In this tutorial, we will cover going from a source geographic file format to viewing tiles on your website using Mapbox GL JS. To achieve this, we will only use free open source tools provided by Mapbox and others. The documentation, we feel requires some improvement for someone to accomplish this, hence this blog post.
 
