@@ -60,6 +60,10 @@ We will be editing some files and a simple text editor will be required.
 
 This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but any modern HTML server will do.
 
+**A FTP client** 
+
+You will need to upload files to your server, usually this is done with a FTP client such as [Filezilla](https://filezilla-project.org/)
+
 **GIS Software**
 
 You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/). QGIS is aviaible for Windows, Mac, and Linux.
@@ -201,39 +205,76 @@ tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-
 
 ## Part 2: Hosting Vector Tiles
 
-
-
-then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
-
-```
-Header set Content-Encoding: gzip
-```
-
 When hosting vector tiles on your own server, you have two main choices:
 
 1. Install a specialist tile hosting server such as TileServer and use a `.mbtiles`
 2. Generate individual `.pbf` tiles and then upload them to a folder on your server.
 
+
+### Hosting using a mbtiles file
+
+See documentation at https://openmaptiles.org/docs/
+
 ### Hosting a folder of individual titles
 
-This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file of servers such as Amazon S3. It shoudl also improvement the hosting performance as your serve does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software.
-
-You can convert a `.geojson` file into a folder of vector titles via the following command
-
-```sh
-tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed msoa.geojson
-```
-This will create a folder called `mytiles` containing many subfolders with all of your tiles.
-
+This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file of servers such as Amazon S3. It should also improve the hosting performance as your server does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software. It is also less suited to hosting datasets that you expect to update regually.
 
 #### Uploading your tiles
 
 Once you have created your tiles simply upload them to your server using an FTP client such as [Filezilla](https://filezilla-project.org/)
 
+#### Modifying HTML Headers
 
-### Hosting using a mbtiles file
+There are two reasons you may want to modify HTML headers.
 
-See documentation at https://openmaptiles.org/docs/
+1. To enable gzip compression (see above)
+2. To enable [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
+
+Cross Origin Resouce Sharing (CORS) is required if you wish to host the tiles on a different server from the one that will serve your website. Common use cases are:
+
+1. You are using separate servers for tile hosting (e.g. Google Cloud or Amazon S3) than for webhosting.
+2. You wish to use the [Maputnik](https://maputnik.github.io/) style editor to build your `style.json` file (see below).
+
+then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
+
+If you are using Apache server HTML headers can be simply modified by adding a `.htacces` file into the folder containing your vector tiles. The `.htacces` file will apply to all the subfolders below the file, so storing all your tiles in a single folder is a good idea.
+
+**Example folder structure** 
+```
+/index.html
+	/tiles
+	.htaccess
+		/basemap
+		/mytiles1
+		/mytiles2
+```
+
+**Example `.htaccess` file**
+```
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Methods: "GET, POST"
+Header set Content-Encoding: gzip
+```
+If your `.htaccess` file is not working you may need to [enable this feature](https://stackoverflow.com/questions/12202387/htaccess-not-working-apache) in your server config file.
+
+### Hosting Fonts
+
+If your map includes text tables, such as road of country names you will need to provide the fonts you wish to use. You can download a selection of fonts from this repo and upload them to your server in a folder called fonts.
+
+**Example folder structure** 
+```
+/index.html
+	/fonts
+	 	/metropolis
+		 	Metropolis-Black.otf
+			Metropolis-BlackItalic.otf
+		/noto-sans
+			NotoNaskhArabic-Bold.ttf
+			
+		/mytiles2
+```
+
+
 
 ## Part 3: Visualising Vector Tiles
 There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [leaflet](). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
