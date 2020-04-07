@@ -60,7 +60,7 @@ We will be editing some files, and a simple text editor will be required.
 
 This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but any modern HTML server will do.
 
-**A FTP client** 
+**An FTP client** 
 
 You will need to upload files to your server. Usually, this is done with an FTP client such as [Filezilla](https://filezilla-project.org/)
 
@@ -126,14 +126,13 @@ find . -type f -exec mv '{}' '{}'.pbf \;
 ```
 
 #### Generating your own Basemap
-
-
-
+To generate your own basemap you will need to install Docker and `openmaptiles` there are installation instructions [here]( https://openmaptiles.org/docs/generate/generate-openmaptiles/). The OpenMapTIles can easily built for an individual country or region using the [quick start]( https://github.com/openmaptiles/openmaptiles/blob/master/QUICKSTART.md) guide. 
+OpenMapTiles uses [Geofabrik](http://download.geofabrik.de/index.html) regions, so you can build a tile layer for any one of those regions with minimal effort. OpenMapTitles also draws in some low-resolution data for the rest of the world, so your map does not appear to be floating in a sea of nothing.
 ### Making Tiles from your own Data
 
 #### Converting your data to GeoJSON
 
-The tools we use to create Vector Tiles require the input data to be in the `.geojson` format an to be using the `epsg:4326` coordinate reference system.
+The tools we use to create Vector Tiles require the input data to be in the `.geojson` format and to be using the `epsg:4326` coordinate reference system.
 
 Converting a shapefile into tile:
 
@@ -234,10 +233,7 @@ Cross Origin Resouce Sharing (CORS) is required if you wish to host the tiles on
 
 1. You are using separate servers for tile hosting (e.g. Google Cloud or Amazon S3) than for web hosting.
 2. You wish to use the [Maputnik](https://maputnik.github.io/) style editor to build your `style.json` file (see below).
-
-then the HTTP header can be simply modified by adding a `.htaccess` file into the folder containing all your tiles.
-
-If you are using Apache server, HTML headers can be simply modified by adding a `.htacces` file into the folder containing your vector tiles. The `.htacces` file will apply to all the subfolders below the file, so storing all your tiles in a single folder is a good idea.
+If you are using Apache server, HTML headers can be simply modified by adding a `.htaccess` file into the folder containing your vector tiles. The `.htaccess` file will apply to all the subfolders below the file, so storing all your tiles in a single folder is a good idea.
 
 **Example folder structure** 
 ```
@@ -259,17 +255,17 @@ If your `.htaccess` file is not working you may need to [enable this feature](ht
 
 ### Hosting Fonts
 
-If your map includes text tables, such as road of country names you will need to provide the fonts you wish to use. You can download a selection of fonts from this repo and upload them to your server in a folder called fonts.
+If your map includes text tables, such as road of country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo]( https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called fonts. You will need to unzip the files and uploaded them in the file structure shown below.
 
 **Example folder structure** 
 ```
 /index.html
 	/fonts
 	 	/metropolis
-		 	Metropolis-Black.otf
-			Metropolis-BlackItalic.otf
+		 	Metropolis-Black.pbf
+			Metropolis-BlackItalic.pbf
 		/noto-sans
-			NotoNaskhArabic-Bold.ttf
+			NotoNaskhArabic-Bold.pbf
 			
 		/mytiles2
 ```
@@ -277,7 +273,7 @@ If your map includes text tables, such as road of country names you will need to
 
 
 ## Part 3: Visualising Vector Tiles
-There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [leaflet](). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
+There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [leaflet]( https://leafletjs.com/). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
 
 Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. 
 
@@ -395,6 +391,41 @@ You will notice that in the HTML example above, we made no reference to where ou
 }
 
 ```
+
+### Dynamically adding vector tile layers
+The `style.json` file is good for vector tiles that you always want to show such as basemaps, but is not dynamic. If you have layers that you wish to toggle on and off then you need a more dynamic method to style the vector tiles.
+Another [Mapbox example]( https://docs.mapbox.com/mapbox-gl-js/example/third-party/) is useful:
+
+```js
+map.on('load', function() {
+map.addSource('msoa', {
+'type': 'vector',
+'tiles': ["https://www.mysite.com/tiles/msoa/{z}/{x}/{y}.pbf"],
+'minzoom': 6,
+'maxzoom': 14
+});
+map.addLayer(
+{
+'id': 'msoa', 
+'type': 'fill',
+'source': 'msoa', // must match name in .addSource
+'source-layer': 'msoa', // must match layer name given when titles were created check metadata.json
+"paint": {
+        "fill-color": {
+          "property": "population",
+          "stops": [
+[ 1000, "#053061"],
+              [2000, "#053061"],
+             [3000, "#2166ac" ],
+          ],
+          "type": "exponential"
+        },
+        "fill-opacity": 0.7
+      }
+}
+});
+```
+
 
 
 ## References:
