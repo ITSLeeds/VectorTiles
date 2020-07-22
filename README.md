@@ -30,7 +30,7 @@ Raster tiles have two significant limitations:
 Due to these limitations, raster tiles are mostly used for base maps and are served by third party services. 
 
 ### Introducing Vector Tiles
-Vector Tiles are a newer take on the idea of tiling, instead of many images the tiles are lots of tiny vector datasets. These vector tiles are usually smaller, as not all pixels need to be coded.
+Vector Tiles are a newer take on the idea of tiling, instead of many images the tiles are lots of tiny vector datasets. These vector tiles are usually smaller, as not all pixels need to be coded. They are also great  for visalising data. For example, if you wanted to make an interative [Choropleth map](https://en.wikipedia.org/wiki/Choropleth_map) with the ability to switch between different variaibles. With raster data each variaible would require its own tileset to be created and downloaded. But vector tiles can contain both geometry and many variaibles in a single tile. Thus they can be dynamically rendered client side using JavaScript, and you can even perfom calualtions on varaibles such as finidng the ratio of two variables.
 
 ## Prerequisites
 
@@ -44,35 +44,35 @@ Most of the tools in this tutorial are Linux command line applications. So you w
 
 This tutorial uses a range of different software; not all software is required for every workflow. The flowcharts below highlight which tools are needed to perform each task.
 
-**[tippecanoe](https://github.com/mapbox/tippecanoe)**
+**[tippecanoe](https://github.com/mapbox/tippecanoe)** (essential)
 
 Tippecanoe is free software from Mapbox which converts `.geojson` files into vector tiles. It is also supported on Mac.
 
-**[mb-util](https://github.com/mapbox/mbutil)**
+**[mb-util](https://github.com/mapbox/mbutil)** (reccomended)
 
 Tippecanoe is free software from Mapbox which converts `.mbtiles` files into a folder of `.pbf` vector tiles.
 
-**A text editor**
+**A text editor** (essential)
 
 We will be editing some files, and a simple text editor will be required.
 
-**A HTML Server**
+**A HTML Server** (essential)
 
 This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but any modern HTML server will do.
 
-**An FTP client** 
+**An FTP client** (essential)
 
 You will need to upload files to your server. Usually, this is done with an FTP client such as [Filezilla](https://filezilla-project.org/)
 
-**GIS Software**
+**GIS Software** (essential)
 
 You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/). QGIS is available for Windows, Mac, and Linux.
 
-**[openmaptiles](https://github.com/openmaptiles/openmaptiles)**
+**[openmaptiles](https://github.com/openmaptiles/openmaptiles)** (optional)
 
 If you wish to generate your own basemap tiles, you will need to use **openmaptiles**. Alteritvily you can download premade tiles which may be free or may require a one-off payment. openmaptiles is available for Windows, Mac, and Linux (see below).
 
-**[docker](https://www.docker.com/)**
+**[docker](https://www.docker.com/)** (optional)
 
 **openmaptiles** requires docker. Docker is available for Windows, Mac, and Linux.
 
@@ -176,17 +176,6 @@ We will use [`tippecanoe`](https://github.com/mapbox/tippecanoe) repo/package to
 tippecanoe -zg -o out.mbtiles --drop-densest-as-needed msoa.geojson
 ```
 
-//TODO use the mbtile viewer to view the tiles we generated.
-
-We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox JS instance. The drawback here, is an initial lag in downloading the whole file by the client (browser), the pro is, as you probably guess, is this happens only once. It was perhaps developed for mobile apps and works perfectly for such cases.
-
-//TODO add html example with mbtiles
-//TODO test servers and CORS
-
-However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshly. It is important to shorten the ["time to first byte"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a language-neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
-
-We can do this by:
-
 ##### Converting to a folder of pbf files
 
 Converting to a folder of `.pbf` tiles with gzip compression
@@ -200,6 +189,29 @@ If you don't want to use gzipped `.pbf` files then you can generate uncompressed
 ```sh
 tippecanoe -zg --output-to-directory=mytiles --drop-densest-as-needed --no-tile-compression msoa.geojson
 ```
+
+#### Checking your vector tiles
+
+If you have QGIS installed the [Vector Tiles Reader](https://github.com/geometalab/Vector-Tiles-Reader-QGIS-Plugin/) plugin is an easy way to view your finished tiles. Simply install the plugin from the plugin manager and then in the Vector menu choose Vector Titles Reader > Add Vector Tiles Layer
+
+<img src='images/qgis_menu.png'/>
+
+On the Directory tab use the brows button to find the location of your folder of Vector Tiles, or if you have created a single MBTiles files use the MBTiles tab.
+
+<img src='images/qgis.png'/>
+
+You do not need to specify a Style JSON URL to view the tiles.
+
+//TODO use the mbtile viewer to view the tiles we generated.
+
+We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox JS instance. The drawback here, is an initial lag in downloading the whole file by the client (browser), the pro is, as you probably guess, is this happens only once. It was perhaps developed for mobile apps and works perfectly for such cases.
+
+//TODO add html example with mbtiles
+//TODO test servers and CORS
+
+However, not everyone can do this as the size of the package could be large and slower connection clients would be punished harshly. It is important to shorten the ["time to first byte"](https://en.wikipedia.org/wiki/Time_to_first_byte). That is why we should consider unzipping the package into single `pbf` tiles. Protocol buffers (pbf) is a language-neutral [serialaization](https://developers.google.com/protocol-buffers) by Google.
+
+We can do this by:
 
 
 ## Part 2: Hosting Vector Tiles
@@ -220,7 +232,7 @@ This method is very simple and does not require the installation of specialist s
 
 #### Uploading your tiles
 
-Once you have created your tiles simply upload them to your server using an FTP client such as [Filezilla](https://filezilla-project.org/)
+Once you have created your tiles simply upload them to your server using an FTP client such as [Filezilla](https://filezilla-project.org/). We suggest you cteate a `tiles` folder on your server and keep each tileset in its own subfolder.
 
 #### Modifying HTML Headers
 
@@ -255,7 +267,7 @@ If your `.htaccess` file is not working you may need to [enable this feature](ht
 
 ### Hosting Fonts
 
-If your map includes text tables, such as road of country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo]( https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called fonts. You will need to unzip the files and uploaded them in the file structure shown below.
+If your map includes text tables, such as road or country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo]( https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called fonts. You will need to unzip the files and uploaded them in the file structure shown below.
 
 **Example folder structure** 
 ```
@@ -398,31 +410,31 @@ Another [Mapbox example]( https://docs.mapbox.com/mapbox-gl-js/example/third-par
 
 ```js
 map.on('load', function() {
-map.addSource('msoa', {
-'type': 'vector',
-'tiles': ["https://www.mysite.com/tiles/msoa/{z}/{x}/{y}.pbf"],
-'minzoom': 6,
-'maxzoom': 14
-});
-map.addLayer(
-{
-'id': 'msoa', 
-'type': 'fill',
-'source': 'msoa', // must match name in .addSource
-'source-layer': 'msoa', // must match layer name given when titles were created check metadata.json
-"paint": {
-        "fill-color": {
-          "property": "population",
-          "stops": [
-[ 1000, "#053061"],
-              [2000, "#053061"],
-             [3000, "#2166ac" ],
-          ],
-          "type": "exponential"
-        },
-        "fill-opacity": 0.7
-      }
-}
+  map.addSource('msoa', {   // define the location of a new vector tileset
+    'type': 'vector',
+    'tiles': ["https://www.mysite.com/tiles/msoa/{z}/{x}/{y}.pbf"],
+    'minzoom': 6,
+    'maxzoom': 14
+  });
+  map.addLayer(           // add a layer to the map
+  {
+  'id': 'msoa', 
+  'type': 'fill',
+  'source': 'msoa',       // must match name in .addSource
+  'source-layer': 'msoa', // must match layer name given when titles were created check metadata.json
+  "paint": {              // define how to colour the polygons
+          "fill-color": {
+            "property": "population",
+            "stops": [
+                [1000, "#053061"],
+                [2000, "#053061"],
+                [3000, "#2166ac"],
+            ],
+            "type": "exponential"
+          },
+          "fill-opacity": 0.7
+        }
+  }
 });
 ```
 
