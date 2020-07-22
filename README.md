@@ -68,9 +68,14 @@ You will need to upload files to your server. Usually, this is done with an FTP 
 
 You will need to project your dataset to `epsg:4326` and convert them into the `.geojson` format. This can be done in a wide range of free GIS software such a [QGIS](https://qgis.org/en/site/). QGIS is available for Windows, Mac, and Linux.
 
+**[tilemaker](https://github.com/systemed/tilemaker)** (optional)
+
+If you wish to generate your own basemap tiles.
+
+
 **[openmaptiles](https://github.com/openmaptiles/openmaptiles)** (optional)
 
-If you wish to generate your own basemap tiles, you will need to use **openmaptiles**. Alteritvily you can download premade tiles which may be free or may require a one-off payment. openmaptiles is available for Windows, Mac, and Linux (see below).
+Alterative way to make your own basemap tiles. Alteritvily you can download premade tiles which may be free or may require a one-off payment. openmaptiles is available for Windows, Mac, and Linux (see below).
 
 **[docker](https://www.docker.com/)** (optional)
 
