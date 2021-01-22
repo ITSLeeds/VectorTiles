@@ -442,6 +442,42 @@ map.on('load', function() {
   }
 });
 ```
+## Part 4: Tips other things to think about
+
+As vector tiles are so efficent in comparion to raster tiles, it is tempting to tread them like any other GIS file format. In a geojson or a geopackage is it common to have many attribute columns for each geometry. It is certainly possible to do this with vector tiles, but it must be done with care. 
+
+The main issue is that by default each tile is capped at 500 kB in size (this can be ajusted). This ensures fast downloading and rendering. Tippecanoe will remove small feaures from a tile to keep to the file size limit. This works really well for base maps, as you don't want to see every building when viewing a map of a whole country. And once you have zoomed in enough to see buildings, there are only a few that need to be downloaded and rendered.
+
+But this approach does not work so well for data, especially area based data. In this case small areas disapearing or being coaled with larger areas can spoil a good piece of data visualisation. So to keep as many of you features visible as possible you need to think of other ways to reduce the tile size.
+
+### Reducing the size of geometries
+
+
+
+### Reducing the size of attributes
+
+It is worth understadning how vector tiles store attribute data, as it is quite different to other GIS file frormats. A full descritpion is [here](https://docs.mapbox.com/vector-tiles/specification/#encoding-attributes), but the key point is that each vector tile contains a lookup table of all the possible values an attribute can have, and each feature stores the keys to that lookup table.
+
+For example if you had a column of data in your geojson with the values `"house", "park", "house", "lake"` and another column `"10.5", "1234", "12.4","567"`. The vector tile would create a lookup table `house = 0, park = 1, lake = 2, 10.5 = 3, 1234 = 4, 12.4 = 5,567 = 6` and then the geometrys would simply store the keys `0,1,2,1` and `3,4,5,6`. This system is excellent for storing text based tags, when you have a small number of possible values which are used again and again (e.g. in a basemap). But this system is terrible for numeric data or any type of data where each value is used only once.
+
+So you need to minimise the number attributes you have and the variability in your attributes. Things you can try:
+
+1. Calcualte an attribute on the fly: Instead of storing population, area, and population density in the vector tile, just store population and area and calcualte the population density when required. See example (here)[https://docs.mapbox.com/mapbox-gl-js/example/visualize-population-density/].
+
+2. Round numeric data to increase the chance of numbers being reused: Decimal numbers are likley to be unique (e.g. 23.4564), but intergers are more frquently reused. Do you really need the full number, or would a rounded one do just as well?
+
+3. Store numbers like scientific notation: Suppose you have two columns of values one that ranges from 1 - 100 and another that ranges from 1,000 to 100,000. There is little chance of repeaded values. But if you scale them by powers of ten and round to an approiate number of significant figures (e.g both 123,456 or 12.345 become 1234) you increase the chance of the same value being reused across different columns. In the javascript you can simply multiply each column back to its original size.
+
+4. Replace numeric data with categorical data. If you are making a choropleth map then you only need to know which colour to use, not the exact value. This won't work if you also want to be able to click on an area to get the exact value.
+
+For all these methods you can easily test their effectivness on your data by checking for the total number of unique values in your data. The lower the better.
+
+
+
+
+
+
+
 
 
 
