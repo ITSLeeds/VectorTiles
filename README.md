@@ -277,7 +277,7 @@ If your `.htaccess` file is not working you may need to [enable this feature](ht
 
 ### Hosting Fonts
 
-If your map includes text tables, such as road or country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo](https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called fonts. You will need to unzip the files and uploaded them in the file structure shown below.
+If your map includes text tables, such as road or country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo](https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called `fonts`. You will need to unzip the files and uploaded them in the file structure shown below.
 
 **Example folder structure** 
 ```
