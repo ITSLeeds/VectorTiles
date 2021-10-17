@@ -214,7 +214,7 @@ You do not need to specify a Style JSON URL to view the tiles.
 
 //TODO use the mbtile viewer to view the tiles we generated.
 
-We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox JS instance. The drawback here, is an initial lag in downloading the whole file by the client (browser), the pro is, as you probably guess, is this happens only once. It was perhaps developed for mobile apps and works perfectly for such cases.
+We [can now serve](mapbox.mapbox-streets-v8) the `.mbtiles` in a Mapbox GL JS instance. The drawback here, is an initial lag in downloading the whole file by the client (browser); the pro is, as you can probably guess, that this happens only once. It was perhaps developed for mobile apps and works perfectly for such cases.
 
 //TODO add html example with mbtiles
 //TODO test servers and CORS
