@@ -143,7 +143,13 @@ Converting a shapefile into tile:
 
 An example file in question would be the UK MSOA boundaries which are roughly ~600M in size when converted to plain `.geojson` file.
 
-This could be achieved in R for instance:
+If you have GDAL [installed](https://tracker.debian.org/pkg/gdal) then the following command will achieve this, once you have downloaded the shapefile.
+
+```sh
+ogr2ogr -f GeoJSON msoa.geojson /tmp/Counties_and_UA/Counties_and_Unitary_Authorities_December_2017_Full_Extent_Boundaries_in_UK_WGS84.shp -lco RFC7946=YES
+```
+
+Downloading and converting the data can also be achieved in R. For instance:
 
 ```R
 # get LAs
@@ -162,12 +168,8 @@ library(sf)
 msoa = st_read(file.path(folder, msoa_shape))
 st_write(msoa, "~/Downloads/msoa.geojson")
 ```
-We have not tested Python but there has to be [packages](https://pypi.org/project/pyshp/1.1.7/) that can read shapefiles and interpret them into GeoJSON. If you have GDAL [installed](https://tracker.debian.org/pkg/gdal) then oneline would achieve the same thing, if you already have downloaded the shapefile. So the above can be done as:
 
-```sh
-ogr2ogr -f GeoJSON msoa.geojson /tmp/Counties_and_UA/Counties_and_Unitary_Authorities_December_2017_Full_Extent_Boundaries_in_UK_WGS84.shp -lco RFC7946=YES
-
-```
+We have not tested Python but there are [packages](https://pypi.org/project/pyshp/1.1.7/) that can read ESRI Shapefiles and interpret them into GeoJSON.
 
 #### Converting GeoJSON to Vector Tiles
 
