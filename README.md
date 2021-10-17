@@ -131,7 +131,7 @@ find . -type f -exec mv '{}' '{}'.pbf \;
 ```
 
 #### Generating your own Basemap
-To generate your own basemap you will need to install Docker and `openmaptiles` there are installation instructions [here](https://openmaptiles.org/docs/generate/generate-openmaptiles/). The OpenMapTiles can easily built for an individual country or region using the [quick start](https://github.com/openmaptiles/openmaptiles/blob/master/QUICKSTART.md) guide. 
+To generate your own basemap you will need to install Docker and `openmaptiles` there are [installation instructions](https://openmaptiles.org/docs/generate/generate-openmaptiles/) available. The OpenMapTiles can easily built for an individual country or region using the [quick start](https://github.com/openmaptiles/openmaptiles/blob/master/QUICKSTART.md) guide. 
 
 OpenMapTiles uses [Geofabrik](http://download.geofabrik.de/index.html) regions, so you can build a tile layer for any one of those regions with minimal effort. OpenMapTitles also draws in some low-resolution data for the rest of the world, so your map does not appear to be floating in a sea of nothing.
 ### Making Tiles from your own Data
@@ -301,7 +301,7 @@ Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/)
 
 <img src='images/vis_flowchart.png'/>
 
-This example is based on the Mapbox getting started [example](https://docs.mapbox.com/mapbox-gl-js/example/simple-map/).
+This example is based on the Mapbox [Getting started example](https://docs.mapbox.com/mapbox-gl-js/example/simple-map/).
 
 ```html
 <!DOCTYPE html>
@@ -336,7 +336,7 @@ The key changes from the Mapbox example are; that `mapboxgl.accessToken` must be
 
 ### Constructing the style.json file
 
-You will notice that in the HTML example above, we made no reference to where our vector tiles are of how they should be displayed. This is because all this information is contained within a stylesheet `.json` file. The full specification for the stylesheet can be found [here](https://docs.mapbox.com/mapbox-gl-js/style-spec/), but a simplified structure is shown below.
+You will notice that in the HTML example above, we made no reference to where our vector tiles are of how they should be displayed. This is because all this information is contained within a stylesheet `.json` file. The [full stylesheet specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/) is available, but a simplified structure is shown below.
 
 ```json
 {
@@ -459,13 +459,13 @@ But this approach does not work so well for data, especially area based data. In
 
 ### Reducing the size of attributes
 
-It is worth understadning how vector tiles store attribute data, as it is quite different to other GIS file frormats. A full descritpion is [here](https://docs.mapbox.com/vector-tiles/specification/#encoding-attributes), but the key point is that each vector tile contains a lookup table of all the possible values an attribute can have, and each feature stores the keys to that lookup table.
+It is worth understadning how vector tiles store attribute data, as it is quite different to other GIS file frormats. A [full description](https://docs.mapbox.com/vector-tiles/specification/#encoding-attributes) is available, but the key point is that each vector tile contains a lookup table of all the possible values an attribute can have, and each feature stores the keys to that lookup table.
 
 For example if you had a column of data in your geojson with the values `"house", "park", "house", "lake"` and another column `"10.5", "1234", "12.4","567"`. The vector tile would create a lookup table `house = 0, park = 1, lake = 2, 10.5 = 3, 1234 = 4, 12.4 = 5,567 = 6` and then the geometrys would simply store the keys `0,1,2,1` and `3,4,5,6`. This system is excellent for storing text based tags, when you have a small number of possible values which are used again and again (e.g. in a basemap). But this system is terrible for numeric data or any type of data where each value is used only once.
 
 So you need to minimise the number attributes you have and the variability in your attributes. Things you can try:
 
-1. Calcualte an attribute on the fly: Instead of storing population, area, and population density in the vector tile, just store population and area and calcualte the population density when required. See example (here)[https://docs.mapbox.com/mapbox-gl-js/example/visualize-population-density/].
+1. Calcualte an attribute on the fly: Instead of storing population, area, and population density in the vector tile, just store population and area and calcualte the population density when required. See [example](https://docs.mapbox.com/mapbox-gl-js/example/visualize-population-density/).
 
 2. Round numeric data to increase the chance of numbers being reused: Decimal numbers are likley to be unique (e.g. 23.4564), but intergers are more frquently reused. Do you really need the full number, or would a rounded one do just as well?
 
