@@ -37,7 +37,7 @@ Vector Tiles are a newer take on the idea of tiling, instead of many images the 
 Most of the tools in this tutorial are Linux command line applications. So you will need a Linux computer with permission to install the software. If you do not have a Linux computer, you can.
 
 1. Create a virtual machine using software such as [Virtual Box](https://www.virtualbox.org/)
-2. On Windows 10, use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+2. On Windows 10, use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install)
 3. Some of the tools are supported on Mac if you have a Mac check documentation
 
 ### Software
