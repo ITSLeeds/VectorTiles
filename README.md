@@ -131,7 +131,7 @@ find . -type f -exec mv '{}' '{}'.pbf \;
 ```
 
 #### Generating your own Basemap
-To generate your own basemap you will need to install Docker and `openmaptiles` there are installation instructions [here]( https://openmaptiles.org/docs/generate/generate-openmaptiles/). The OpenMapTiles can easily built for an individual country or region using the [quick start]( https://github.com/openmaptiles/openmaptiles/blob/master/QUICKSTART.md) guide. 
+To generate your own basemap you will need to install Docker and `openmaptiles` there are installation instructions [here](https://openmaptiles.org/docs/generate/generate-openmaptiles/). The OpenMapTiles can easily built for an individual country or region using the [quick start](https://github.com/openmaptiles/openmaptiles/blob/master/QUICKSTART.md) guide. 
 
 OpenMapTiles uses [Geofabrik](http://download.geofabrik.de/index.html) regions, so you can build a tile layer for any one of those regions with minimal effort. OpenMapTitles also draws in some low-resolution data for the rest of the world, so your map does not appear to be floating in a sea of nothing.
 ### Making Tiles from your own Data
@@ -275,7 +275,7 @@ If your `.htaccess` file is not working you may need to [enable this feature](ht
 
 ### Hosting Fonts
 
-If your map includes text tables, such as road or country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo]( https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called fonts. You will need to unzip the files and uploaded them in the file structure shown below.
+If your map includes text tables, such as road or country names you will need to provide the fonts you wish to use. You can download a selection of fonts [from this repo](https://github.com/ITSLeeds/VectorTiles/releases) and upload them to your server in a folder called fonts. You will need to unzip the files and uploaded them in the file structure shown below.
 
 **Example folder structure** 
 ```
@@ -293,7 +293,7 @@ If your map includes text tables, such as road or country names you will need to
 
 
 ## Part 3: Visualising Vector Tiles
-There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [Leaflet]( https://leafletjs.com/). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
+There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [Leaflet](https://leafletjs.com/). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
 
 Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. Note that Mapbox GL JS v2 and onwards is only quasi- open source, as it must be used according to the Mapbox Terms of Service which includes having an account that monitors (and potentially charges) for map loads even when you are using your own data.
 
