@@ -294,7 +294,7 @@ If your map includes text tables, such as road or country names you will need to
 ## Part 3: Visualising Vector Tiles
 There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL) this means the library can use both the GPU and the CPU to render your maps rather than just the CPU as was the case with older libraries such as [leaflet]( https://leafletjs.com/). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
 
-Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. 
+Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. Note that Mapbox GL JS v2 and onwards is only quasi- open source, as it must be used according to the Mapbox Terms of Service which includes having an account that monitors (and potentially charges) for map loads even when you are using your own data.
 
 Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/) and lots of [examples](https://docs.mapbox.com/mapbox-gl-js/examples/) to this tutorial will focus on the changes required for hosting your own vector tiles and supporting multiple vector tile layers.
 
@@ -319,7 +319,7 @@ This example is based on the Mapbox getting started [example](https://docs.mapbo
 <body>
 <div id="map"></div>
 <script>
-    mapboxgl.accessToken = 'NotNeeded';
+    mapboxgl.accessToken = 'your-access-token-here';
     var map = new mapboxgl.Map({
         container: 'map',                                 // container id
         style: 'https://www.mysite.com/tiles/style.json', // stylesheet location
@@ -331,7 +331,7 @@ This example is based on the Mapbox getting started [example](https://docs.mapbo
 </body>
 </html>
 ```
-The key changes from the Mapbox example are; that `mapboxgl.accessToken` must be defined but is not used as we are not connecting to the Mapbox services, and the location of the `style.json` has been changed to a URL on your server. 
+The key changes from the Mapbox example are; that `mapboxgl.accessToken` must be defined (though if you are using Mapbox GL v1, is not used, as we are not connecting to the Mapbox services, and so you can put any string), and the location of the `style.json` has been changed to a URL on your server.
 
 ### Constructing the style.json file
 
