@@ -19,7 +19,7 @@ Web maps (Haklay et al. 2008) are a great way to present your data; they allow f
 
 ### Tiling – What it is and why it matters
 Tiling breaks your data into many small square datasets (tiles) than can then be downloaded individually. This means that you only have to download the tiles in the area you interested in rather than the whole dataset. This both reduces the amount of data that the webserver has to send to the user and reduces the amount of data the user's computer must hold in memory.
-Tiling was first implemented for raster data with each tile being a 256 x 256 pixel PNG image. It works well for basemaps and is still used by many websites today such as https://www.openstreetmap.org/. Tiles exist in a pyramid structure; at the top of the pyramid (zoom level 0), the whole world is a single tile. Each step down the pyramid (zoom levels 1,2,3, etc.) increases the number of tiles by a factor of 4.  Tilesets typically go down to about zoom level 19 at which point one tile covers an area about the size of a single building.
+Tiling was first implemented for raster data with each tile being a 256 x 256 pixel PNG image. It works well for basemaps and is still used by many websites today such as [OpenStreetMap](https://www.openstreetmap.org/). Tiles exist in a pyramid structure; at the top of the pyramid (zoom level 0), the whole world is a single tile. Each step down the pyramid (zoom levels 1,2,3, etc.) increases the number of tiles by a factor of 4.  Tilesets typically go down to about zoom level 19 at which point one tile covers an area about the size of a single building.
 
 <img src='images/tiles.png'/>
 
