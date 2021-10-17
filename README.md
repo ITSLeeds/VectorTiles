@@ -60,9 +60,9 @@ We will be editing some files, and a simple text editor will be required.
 
 This tutorial was written with [Apache](https://httpd.apache.org/) in mind, but any modern HTML server will do.
 
-**An FTP client** (essential)
+**An (S)FTP client** (essential)
 
-You will need to upload files to your server. Usually, this is done with an FTP client such as [Filezilla](https://filezilla-project.org/)
+You will need to upload files to your server. Usually, this is done with an (S)FTP client such as [Filezilla](https://filezilla-project.org/).
 
 **GIS Software** (essential)
 
@@ -240,7 +240,7 @@ This method is very simple and does not require the installation of specialist s
 
 #### Uploading your tiles
 
-Once you have created your tiles simply upload them to your server using an FTP client such as [Filezilla](https://filezilla-project.org/). We suggest you cteate a `tiles` folder on your server and keep each tileset in its own subfolder.
+Once you have created your tiles simply upload them to your server using an (S)FTP client such as [Filezilla](https://filezilla-project.org/). We suggest you create a `tiles` folder on your server and keep each tileset in its own subfolder.
 
 #### Modifying HTML Headers
 
