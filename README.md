@@ -256,7 +256,7 @@ If you are using Apache server, HTML headers can be simply modified by adding a 
 ```
 /index.html
 	/tiles
-	.htaccess
+		.htaccess
 		/basemap
 		/mytiles1
 		/mytiles2
