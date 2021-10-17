@@ -83,6 +83,8 @@ Alterative way to make your own basemap tiles. Alteritvily you can download prem
 
 ## Part 1: Making Vector Titles
 
+This diagram shows the various ways in which Vector Tiles can be created and then hosted:
+
 <img src='images/gen_flowchart.png'/>
 
 
