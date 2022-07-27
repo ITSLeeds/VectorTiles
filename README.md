@@ -133,6 +133,29 @@ gzip -d -r -S .pbf *
 find . -type f -exec mv '{}' '{}'.pbf \;
 ```
 
+#### Using pre-made OS Open Zoomstack
+
+If your project is only in Great Britain you can used the Ordnance Survey [Open Zoomstack](https://www.ordnancesurvey.co.uk/business-government/products/open-zoomstack) which provides a MBTitles file or a GeoPackage of the data. We used the Zoomstack as the basemap in the [Place-Based Carbon Calculator](https://www.carbon.place/). In this case we built a custom tileset from the GeoPackage data as we found the performance of the tileset provided by the OS to be poor. This is because the Open Zoomstack contains a lot of data, and for our purposes a simpler map was preferable. So we extracted geojson files from each of the layers in the Geopackage file and made several modifications.
+
+1. Removed some layers that we did not need such as the contour lines and building outlines (this reduced file sizes significantly)
+2. Created high/medium/low version of some layers and filtered out some data for the lower zoom levels. For example removing minor roads from the low zoom levels
+3. Produced three different tilesets for high/medium/low zoom levels and then combined them into a single tileset.
+4. Created a custom sea layer. In the OS data the sea is assumed to be the background with a layer used to define the location of the land. For our use case, users would mostly be looking at the land, so we chose to invert this and create a tileset where the land was the background and the sea was specified. We also added a low resolution coastline for Europe so that Great Britain was mapped in context. 
+
+<img src='images/pbcc.jpg'/>
+
+To save disk space the sea polygon is only close to the UK coastline on high zoom levels. We designed this to be hard to spot but if you zoom into the Isle of Mann close enough the Sea disappears and everything becomes the default land background.
+
+
+An example of the Tippecanoe command to make the basemap tileset.
+
+```sh
+tippecanoe --output-to-directory=OSzoomStackSeamMed  --attribution=OS --minimum-zoom=9 --maximum-zoom=11 --drop-smallest-as-needed --simplification=10 --force boundaries.geojson foreshore.geojson greenspace.geojson sea.geojson names.geojson national_parks.geojson rail.geojson railway_stations.geojson roads.geojson surfacewater.geojson urban_areas.geojson woodland.geojson
+
+```
+Notice how we can list multiple geojson files to combine them into a single tileset. Also notice that when making different tilesets for different ranges you need to put each into a separate folder. Otherwise tippecanoe will delete the old tileset when you create a new one.
+
+
 #### Generating your own basemap with OpenMapTiles
 
 To generate your own basemap you will need to install Docker and `openmaptiles`. There are [installation instructions](https://openmaptiles.org/docs/generate/generate-openmaptiles/) available. The OpenMapTiles can easily built for an individual country or region using the [quick start](https://github.com/openmaptiles/openmaptiles/blob/master/QUICKSTART.md) guide.
@@ -241,7 +264,9 @@ See documentation at https://openmaptiles.org/docs/ .
 
 ### Hosting a folder of individual titles
 
-This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file servers such as Amazon S3. It should also improve the hosting performance, as your server does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software. It is also less suited to hosting datasets that you expect to update regularly.
+This method is very simple and does not require the installation of specialist software on your server. This means you can even host the tiles on file servers such as Amazon S3 or Google Cloud. It should also improve the hosting performance, as your server does not need to do any processing, simply serve the requested files. The downside is that you get no support or helpful features included in your chosen software. It is also less suited to hosting datasets that you expect to update regularly.
+
+Note that the cost of hosting tiles on Google Cloud or Amazon S3 can be very low, e.g. \$0.023 per GB per month, but you may also be charged for interactions with that storage such as file uploads. We have tested hosting titles on Google Cloud Storage which offers a 5 GB free tier, but found that uploading 5 GB of titles resulted a £12 charge in API requests. Conversely traditional webhosts will charge more per GB (e.g. \$0.2 per GB per month) but will not charge for uploads. The cheapest option for you will depend on the frequnecy that you expect to update your tilesets.
 
 #### Uploading your tiles
 
@@ -273,10 +298,12 @@ If you are using Apache server, HTML headers can be simply modified by adding a 
 **Example `.htaccess` file**
 ```
 Header add Access-Control-Allow-Origin "*"
-Header add Access-Control-Allow-Methods: "GET, POST"
+Header add Access-Control-Allow-Methods: "GET"
 Header set Content-Encoding: gzip
 ```
 If your `.htaccess` file is not working you may need to [enable this feature](https://stackoverflow.com/questions/12202387/htaccess-not-working-apache) in your server config file.
+
+Note that setting Header add Access-Control-Allow-Origin to "*" means any website can view your tiles. You may wish to opt to specify which sites can access your tiles.
 
 ### Hosting fonts
 
@@ -301,6 +328,8 @@ If your map includes text tables, such as road or country names, you will need t
 There are many ways to view vector tiles, but when building a website, we recommend using Mapbox GL JS. Mapbox GL JS is a Javascript library which takes advantage of [WebGL](https://en.wikipedia.org/wiki/WebGL). This means the library can use both the GPU and the CPU to render your maps, rather than just the CPU as was the case with older libraries such as [Leaflet](https://leafletjs.com/). The use of the GPU means that you can render larger and more complex datasets such as 3D maps, animations, and other advanced features.
 
 Although Mapbox GL JS is open source, it is maintained by Mapbox and most of the documentation steers you towards using Mapbox's paid services. However, it works equally well with vector tiles hosted from any location. Note that Mapbox GL JS v2 and onwards is only quasi- open source, as it must be used according to the Mapbox Terms of Service which includes having an account that monitors (and potentially charges) for map loads even when you are using your own data.
+
+There is an open source fork of Mapbox V1 called [Maplibre](https://maplibre.org/) but it is experimental.
 
 Mapbox GL JS has good [documentation](https://docs.mapbox.com/mapbox-gl-js/api/) and lots of [examples](https://docs.mapbox.com/mapbox-gl-js/examples/). This tutorial will focus on the changes required for hosting your own vector tiles and supporting multiple vector tile layers.
 
@@ -460,6 +489,11 @@ But this approach does not work so well for data, especially area-based data. In
 
 ### Reducing the size of geometries
 
+Tippecanoe has a built in simplification options including:
+
+* --simplification=10 this can be set to a numerical value. You can go upto about 10 without noticing the loss in quality.
+* --drop-densest-as-needed removed small objects in a crowded tile, works well for point data
+* --coalesce-densest-as-needed merge small object in a crowded tile, works well for polygon data especially if you need continouse coverage coverage 
 
 
 ### Reducing the size of attributes
@@ -474,7 +508,7 @@ So you need to minimise the number attributes you have and the variability in yo
 
 2. Round numeric data to increase the chance of numbers being reused: Decimal numbers are likely to be unique (e.g. 23.4564), but integers are more frequently reused. Do you really need the full number, or would a rounded one do just as well?
 
-3. Store numbers like scientific notation: Suppose you have two columns of values one that ranges from 1 - 100 and another that ranges from 1,000 to 100,000. There is little chance of repeaded values. But if you scale them by powers of ten and round to an approiate number of significant figures (e.g both 123,456 or 12.345 become 1234) you increase the chance of the same value being reused across different columns. In the javascript you can simply multiply each column back to its original size.
+3. Store numbers like scientific notation: Suppose you have two columns of values one that ranges from 1 - 100 and another that ranges from 1,000 to 100,000. There is little chance of repeated values. But if you scale them by powers of ten and round to an appropriate number of significant figures (e.g both 123,456 or 12.345 become 1234) you increase the chance of the same value being reused across different columns. In the javascript you can simply multiply each column back to its original size.
 
 4. Replace numeric data with categorical data. If you are making a choropleth map then you only need to know which colour to use, not the exact value. This won't work if you also want to be able to click on an area to get the exact value.
 
